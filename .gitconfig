@@ -1,0 +1,16 @@
+[user]
+	name = Keith Barrette
+	email = etterrab@gmail.com
+[push]
+	default = upstream
+[color]
+	ui = true
+[alias]
+	st = status
+	ci = commit
+	co = checkout
+	freebase = rebase --interactive origin/master
+	smush = commit --amend --no-edit
+  nukenotes = "!git fetch origin refs/notes/*:refs/notes/*; git notes --ref=jenkins remove; git push origin refs/notes/jenkins"
+[core]
+	editor = ~/bin/vim
