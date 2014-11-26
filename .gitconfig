@@ -13,4 +13,6 @@
 	smush = commit --amend --no-edit
   nukenotes = "!git fetch origin refs/notes/*:refs/notes/*; git notes --ref=jenkins remove; git push origin refs/notes/jenkins"
 [core]
-	editor = ~/bin/vim
+	editor = vim
+[credential]
+	helper = osxkeychain
