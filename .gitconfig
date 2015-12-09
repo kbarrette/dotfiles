@@ -11,7 +11,8 @@
 	co = checkout
 	freebase = rebase --interactive origin/master
 	smush = commit --amend --no-edit
-  nukenotes = "!git fetch origin refs/notes/*:refs/notes/*; git notes --ref=jenkins remove; git push origin refs/notes/jenkins"
+	nukenotes = "!git fetch origin refs/notes/*:refs/notes/*; git notes --ref=jenkins remove; git push origin refs/notes/jenkins"
+	inject = "!f() { git commit --fixup=$1; git rebase --interactive --autosquash --autostash $1^; }; f"
 [core]
 	editor = vim
 	excludesfile = ~/.gitignore
