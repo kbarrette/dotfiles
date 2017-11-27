@@ -1,6 +1,7 @@
 set -x EDITOR "vim"
 set -x VISUAL "vim"
 set -x LESS "-R"
+set -x FZF_DEFAULT_COMMAND 'rg --files'
 
 alias be "bundle exec"
 alias ls "ls -FG"
