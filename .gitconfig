@@ -2,16 +2,14 @@
 	name = Keith Barrette
 	email = etterrab@gmail.com
 [push]
-	default = upstream
+	default = simple
 [color]
 	ui = true
 [alias]
 	st = status
 	ci = commit
 	co = checkout
-	freebase = rebase --interactive origin/master
 	smush = commit --amend --no-edit
-	nukenotes = "!git fetch origin refs/notes/*:refs/notes/*; git notes --ref=jenkins remove; git push origin refs/notes/jenkins"
 	inject = "!f() { git commit --fixup=$1; git rebase --interactive --autosquash --autostash $1^; }; GIT_EDITOR=true f"
 [core]
 	editor = vim

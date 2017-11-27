@@ -1,2 +1,6 @@
 .tags
+.DS_Store
+.gradle/
+.idea/
 fishd*
+bundle/
