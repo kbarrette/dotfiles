@@ -3,6 +3,8 @@ set -x VISUAL "vim"
 set -x LESS "-R"
 set -x FZF_DEFAULT_COMMAND 'rg --files'
 
+set fish_greeting ""
+
 alias be "bundle exec"
 alias ls "ls -FG"
 alias pag "ag --pager='less -R'"
