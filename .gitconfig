@@ -11,6 +11,9 @@
 	co = checkout
 	smush = commit --amend --no-edit
 	inject = "!f() { git commit --fixup=$1; git rebase --interactive --autosquash --autostash $1^; }; GIT_EDITOR=true f"
+	branch-name = rev-parse --abbrev-ref HEAD
+	firstpush = "!git push --set-upstream origin $(git branch-name)"
+	wip = !"git add .; git commit -m 'wip'"
 [core]
 	editor = vim
 	excludesfile = ~/.gitignore
