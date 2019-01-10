@@ -3,7 +3,7 @@ set -x VISUAL "vim"
 set -x LESS "-R"
 set -x FZF_DEFAULT_COMMAND 'rg --files'
 
-set fish_user_paths $HOME/bin /usr/local/sbin
+set fish_user_paths $HOME/bin
 
 set fish_greeting ""
 

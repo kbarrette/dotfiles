@@ -1,29 +1,24 @@
-function fish_prompt
-  set prompt_color "white"
-  set prompt_sign "\$"
-  set -g fish_prompt_pwd_dir_length 0
+set fish_prompt_pwd_dir_length 0
 
-  if test "$fish_key_bindings" = "fish_vi_key_bindings"
-      or test "$fish_key_bindings" = "fish_hybrid_key_bindings"
-      switch $fish_bind_mode
-          case default
-              set prompt_color "0d61ac"
-              set prompt_sign "~"
-          case insert
-              set prompt_color "499900"
-              set prompt_sign "\$"
-          case replace-one
-              set prompt_color "fdae66"
-              set prompt_sign "X"
-          case visual
-              set prompt_color "870000"
-              set prompt_sign ">"
-      end
+function fish_prompt
+  set_color --dim normal
+  printf "[%s %s%s]" (date +"%T") (prompt_pwd) (__fish_git_prompt)
+
+  switch $fish_bind_mode
+      case default
+          set_color --bold "0d61ac"
+          printf "~ "
+      case replace-one
+          set_color --bold "fdae66"
+          printf "X "
+      case visual
+          set_color --bold "870000"
+          printf "> "
+      case "*"
+          set_color --bold "499900"
+          printf "\$ "
   end
 
-  printf "[%s %s%s]" (date +"%T") (prompt_pwd) (__fish_git_prompt)
-  set_color --bold $prompt_color
-  printf "%s " $prompt_sign
   set_color normal
 end
 
