@@ -1,4 +1,5 @@
 set fish_prompt_pwd_dir_length 0
+set __fish_git_prompt_shorten_branch_len 32
 
 function fish_prompt
   set_color --dim normal
