@@ -38,10 +38,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'Lokaltog/vim-easymotion'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 Plug 'airblade/vim-gitgutter'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-operator-replace' | Plug 'kana/vim-operator-user'
-Plug 'mileszs/ack.vim'
 Plug 'mtth/scratch.vim'
 Plug 'nanotech/jellybeans.vim'
 Plug 'tpope/vim-commentary'
@@ -59,8 +58,6 @@ runtime macros/matchit.vim
 " -------------------------------
 " Plugin customizations and setup
 " -------------------------------
-let g:ackprg = 'ag --vimgrep -W80'
-let g:ack_autoclose = 1
 
 " vim-gitgutter setup
 set signcolumn=yes
@@ -85,10 +82,6 @@ map gr <Plug>(operator-replace)
 
 " scratch setup
 let g:scratch_filetype = 'markdown'
-let g:scratch_autohide = 0
-let g:scratch_insert_autohide = 0
-let g:scratch_horizontal = 0
-let g:scratch_height = 80
 
 " Easymotion setup
 map <Leader>s <Plug>(easymotion-s)
@@ -106,6 +99,8 @@ nnoremap <C-L> :Buffers<CR>
 autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler | autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 command -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview('right:50%'))
+noremap <leader>ag :call fzf#vim#ag(expand('<cword>'), fzf#vim#with_preview('right:50%'))<CR>
+
 
 
 " ----------------------------
@@ -158,9 +153,6 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Fenced markdown languages
 let g:markdown_fenced_languages = ['erb=eruby', 'javascript', 'json=javascript', 'ruby', 'html']
-
-" 4-space Java indent
-au FileType java setlocal shiftwidth=4 tabstop=4
 
 " GUI setup
 if has('gui_running')
