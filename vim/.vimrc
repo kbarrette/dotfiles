@@ -36,21 +36,25 @@ nnoremap <leader>bd :bd<CR>
 " Plugins
 call plug#begin('~/.vim/plugged')
 Plug 'Lokaltog/vim-easymotion'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-operator-replace' | Plug 'kana/vim-operator-user'
 Plug 'mtth/scratch.vim'
 Plug 'nanotech/jellybeans.vim'
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'posva/vim-vue'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/BufOnly.vim'
-Plug 'w0rp/ale'
+Plug 'w0rp/ale' " TODO coc.vim can take over linting?
 call plug#end()
 runtime macros/matchit.vim
 
@@ -73,6 +77,8 @@ highlight link GitGutterChangeDelete DiffChange
 set noshowmode
 let g:airline#extensions#ale#enabled = 1
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#branch#displayed_head_limit = 32
+let g:airline#extensions#branch#enabled = 0
 
 " YouCompleteMe setup
 let g:ycm_complete_in_comments_and_strings = 1
@@ -101,6 +107,17 @@ autocmd  FileType fzf set laststatus=0 noshowmode noruler | autocmd BufLeave <bu
 command -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview('right:50%'))
 noremap <leader>ag :call fzf#vim#ag(expand('<cword>'), fzf#vim#with_preview('right:50%'))<CR>
 
+" vim-vue setup
+autocmd FileType vue syntax sync fromstart
+
+" coc.nvim setup
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+nmap <silent> <C-]> <Plug>(coc-definition)
+let g:LanguageClient_serverCommands = { 'vue': ['vls'] }
+
+" ale setup
+let g:ale_linters = {'javascript': ['eslint']}
 
 
 " ----------------------------
@@ -251,6 +268,10 @@ set tags=.tags
 set path=.
 
 nnoremap <leader>rd :redraw!<CR>
+
+nnoremap <leader>cp :let @*=expand("%")<CR>
+
+nnoremap <leader>rh :syntax sync fromstart<CR>
 
 nnoremap <silent> <C-N> :set relativenumber<CR>:sleep 500m <bar> set norelativenumber<CR>
 augroup HiglightTODO
