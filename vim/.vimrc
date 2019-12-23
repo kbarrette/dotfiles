@@ -171,6 +171,9 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " Fenced markdown languages
 let g:markdown_fenced_languages = ['erb=eruby', 'javascript', 'json=javascript', 'ruby', 'html']
 
+" *.jb is ruby
+autocmd BufRead,BufNewFile *.jb set filetype=ruby
+
 " GUI setup
 if has('gui_running')
   if has("win32") || has("win16")
@@ -266,6 +269,9 @@ nnoremap <silent> <C-K> :wincmd W<CR>
 
 set tags=.tags
 set path=.
+
+set foldmethod=indent
+set foldlevelstart=99
 
 nnoremap <leader>rd :redraw!<CR>
 

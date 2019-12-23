@@ -14,6 +14,8 @@
 	branch-name = rev-parse --abbrev-ref HEAD
 	firstpush = "!git push --set-upstream origin $(git branch-name)"
 	wip = !"git add .; git commit -m 'wip'"
+	copymod = !"git status --porcelain | cut -d' ' -f3 | tr -d '\n' | pbcopy"
+  diff-remote = !"git diff origin/$(git branch-name)"
 [core]
 	editor = vim
 	excludesfile = ~/.gitignore
@@ -21,3 +23,10 @@
 	helper = osxkeychain
 [diff]
 	algorithm = patience
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[help]
+	autocorrect = 1

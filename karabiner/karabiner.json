@@ -316,7 +316,7 @@
                         "key_code": "caps_lock"
                     },
                     "to": {
-                        "key_code": "0"
+                        "key_code": "non_us_pound"
                     }
                 }
             ],
