@@ -3,6 +3,9 @@ set nocompatible
 
 set shell=/bin/sh
 
+" Syntax highlighting on
+syntax on
+
 " ------------------
 " Custom keybindings
 " ------------------
@@ -38,7 +41,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'Lokaltog/vim-easymotion'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 Plug 'airblade/vim-gitgutter'
-Plug 'junegunn/fzf'
+Plug 'fatih/vim-go'
+Plug 'junegunn/fzf', { 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-operator-replace' | Plug 'kana/vim-operator-user'
 Plug 'mtth/scratch.vim'
@@ -49,12 +53,13 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rsi'
+" Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/BufOnly.vim'
-Plug 'w0rp/ale' " TODO coc.vim can take over linting?
+Plug 'dense-analysis/ale' " TODO coc.vim can take over linting?
 call plug#end()
 runtime macros/matchit.vim
 
@@ -63,15 +68,28 @@ runtime macros/matchit.vim
 " Plugin customizations and setup
 " -------------------------------
 
+" jellybeans setup
+" Make paren matching more subtle, Syntastic errors match other errors, Todo more prominent
+let g:jellybeans_overrides = {
+\  'MatchParen': { 'guifg': 'ffffff', 'ctermfg': '231', 'attr': 'underline,bold' },
+\  'SyntasticError': { 'guibg': '902020', 'ctermbg': 'DarkRed' },
+\  'Todo': { 'attr': 'reverse,bold' },
+\}
+colorscheme jellybeans
+
 " vim-gitgutter setup
 set signcolumn=yes
-let g:gitgutter_override_sign_column_highlight = 0
-let g:gitgutter_realtime = 0
-let g:gitgutter_eager = 0
-highlight link GitGutterAdd DiffAdd
-highlight link GitGutterChange DiffChange
-highlight link GitGutterDelete DiffDelete
-highlight link GitGutterChangeDelete DiffChange
+" let g:gitgutter_override_sign_column_highlight = 0
+" let g:gitgutter_realtime = 0
+" let g:gitgutter_eager = 0
+" highlight link GitGutterAdd DiffAdd
+" highlight link GitGutterChange DiffChange
+" highlight link GitGutterDelete DiffDelete
+" highlight link GitGutterChangeDelete DiffChange
+highlight GitGutterAdd guifg=#437019
+highlight GitGutterChange guifg=#2B5B77
+highlight GitGutterDelete guifg=#700009
+highlight GitGutterChangeDelete guifg=#2B5B77
 
 " vim-airline setup
 set noshowmode
@@ -118,28 +136,18 @@ let g:LanguageClient_serverCommands = { 'vue': ['vls'] }
 
 " ale setup
 let g:ale_linters = {'javascript': ['eslint']}
-
+let g:ale_ruby_rubocop_executable = 'bundle'
 
 " ----------------------------
 " Colors, display options, etc
 " ----------------------------
 
-" Make paren matching more subtle, Syntastic errors match other errors, Todo more prominent
-let g:jellybeans_overrides = {
-\  'MatchParen': { 'guifg': 'ffffff', 'ctermfg': '231', 'attr': 'underline,bold' },
-\  'SyntasticError': { 'guibg': '902020', 'ctermbg': 'DarkRed' },
-\  'Todo': { 'attr': 'reverse,bold' },
-\}
-colorscheme jellybeans
-
 " Enable filetype-specific plugins and indenting
 filetype plugin indent on
 
-" Syntax highlighting on
-syntax on
-
 " Show line number
 set number
+
 " set relativenumber
 " autocmd InsertEnter * :set number | set norelativenumber
 " autocmd InsertLeave * :set relativenumber | set nonumber
@@ -191,7 +199,6 @@ if has('gui_running')
 else
   set t_Co=256
 endif
-
 
 " --------------------
 " General vim behavior
@@ -256,7 +263,7 @@ nnoremap <leader>bo :Bufonly<CR>
 " Experiments
 " -----------
 if has("termguicolors")
- set termguicolors
+  set termguicolors
 endif
 
 set breakindent
@@ -284,8 +291,3 @@ augroup HiglightTODO
   autocmd!
   autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'TODO', -1)
 augroup END
-
-if !empty(matchstr(system('rbenv local'), 'jruby'))
-  let g:ale_ruby_ruby_executable = '/usr/bin/ruby' " Use system ruby if in jruby (jruby startup is slow)
-  let g:ale_ruby_rubocop_executable = 'system_rubocop'
-endif

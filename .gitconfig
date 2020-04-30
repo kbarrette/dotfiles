@@ -13,6 +13,7 @@
 	inject = "!f() { git commit --fixup=$1; git rebase --interactive --autosquash --autostash $1^; }; GIT_EDITOR=true f"
 	branch-name = rev-parse --abbrev-ref HEAD
 	firstpush = "!git push --set-upstream origin $(git branch-name)"
+  firstpushtest = "!open $(git push --set-upstream origin $(git branch-name) | grep 'remote:      ' |head -1|sed 's/.*https/https/')"
 	wip = !"git add .; git commit -m 'wip'"
 	copymod = !"git status --porcelain | cut -d' ' -f3 | tr -d '\n' | pbcopy"
   diff-remote = !"git diff origin/$(git branch-name)"
