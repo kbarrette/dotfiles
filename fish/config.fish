@@ -2,8 +2,7 @@ set -x EDITOR "vim"
 set -x VISUAL "vim"
 set -x LESS "-R"
 set -x FZF_DEFAULT_COMMAND 'rg --files'
-
-set -U fish_user_paths $HOME/bin $fish_user_paths
+set -x PATH $HOME/bin $PATH
 
 set fish_greeting ""
 
