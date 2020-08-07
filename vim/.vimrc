@@ -47,7 +47,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-operator-replace' | Plug 'kana/vim-operator-user'
 Plug 'mtth/scratch.vim'
 Plug 'nanotech/jellybeans.vim'
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'posva/vim-vue'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -97,6 +97,7 @@ let g:airline#extensions#ale#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#branch#displayed_head_limit = 32
 let g:airline#extensions#branch#enabled = 0
+let g:airline_section_y = ''
 
 " YouCompleteMe setup
 let g:ycm_complete_in_comments_and_strings = 1
