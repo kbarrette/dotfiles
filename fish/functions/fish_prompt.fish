@@ -3,13 +3,14 @@ set __fish_git_prompt_shorten_branch_len 32
 
 function fish_prompt
   set_color --dim normal
+  iterm2_prompt_mark
   printf "[%s %s%s]" (date +"%T") (prompt_pwd) (__fish_git_prompt)
 
   switch $fish_bind_mode
       case default
           set_color --bold "0d61ac"
           printf "~ "
-      case replace-one
+      case replace_one
           set_color --bold "fdae66"
           printf "X "
       case visual
