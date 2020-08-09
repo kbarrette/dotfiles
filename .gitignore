@@ -6,4 +6,4 @@ fishd*
 bundle/
 vim/plugged
 vim/autoload/plug.vim.old
-
+vim/.netrwhist
