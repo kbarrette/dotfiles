@@ -1,4 +1,4 @@
 function pag
-  ag --pager='less -R' $argv
+  ag --pager='less -FRX' $argv
 end
 
