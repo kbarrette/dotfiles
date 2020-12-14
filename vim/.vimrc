@@ -59,7 +59,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/BufOnly.vim'
-Plug 'dense-analysis/ale' " TODO coc.vim can take over linting?
+" Plug 'dense-analysis/ale' " TODO coc.vim can take over linting?
 call plug#end()
 runtime macros/matchit.vim
 
@@ -93,7 +93,7 @@ highlight GitGutterChangeDelete guifg=#2B5B77
 
 " vim-airline setup
 set noshowmode
-let g:airline#extensions#ale#enabled = 1
+" let g:airline#extensions#ale#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#branch#displayed_head_limit = 32
 let g:airline#extensions#branch#enabled = 0
@@ -109,7 +109,7 @@ map gr <Plug>(operator-replace)
 let g:scratch_filetype = 'markdown'
 
 " Easymotion setup
-map <Leader>s <Plug>(easymotion-s)
+" map <Leader>s <Plug>(easymotion-s)
 map <Leader>S <Plug>(easymotion-S)
 map <Leader>f <Plug>(easymotion-f)
 map <Leader>F <Plug>(easymotion-F)
@@ -120,11 +120,14 @@ map <Leader>k <Plug>(easymotion-k)
 
 " FZF setup
 nnoremap <C-P> :FZF<CR>
-nnoremap <C-L> :Buffers<CR>
-autocmd! FileType fzf
-autocmd  FileType fzf set laststatus=0 noshowmode noruler | autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+" nnoremap <C-L> :Buffers<CR>
+nnoremap <C-L> :call fzf#vim#buffers(expand('<q-args>'), 0)<CR>
+" autocmd! FileType fzf
+" autocmd  FileType fzf set laststatus=0 noshowmode noruler | autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 command -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview('right:50%'))
 noremap <leader>ag :call fzf#vim#ag(expand('<cword>'), fzf#vim#with_preview('right:50%'))<CR>
+noremap <leader>s :call fzf#vim#ag(expand('<cword>'), fzf#vim#with_preview('right:50%'))<CR>
+noremap <leader>rg :execute('Rg '.expand('<cword>'))<CR>
 
 " vim-vue setup
 autocmd FileType vue syntax sync fromstart
@@ -136,8 +139,11 @@ nmap <silent> <C-]> <Plug>(coc-definition)
 let g:LanguageClient_serverCommands = { 'vue': ['vls'] }
 
 " ale setup
-let g:ale_linters = {'javascript': ['eslint']}
-let g:ale_ruby_rubocop_executable = 'bundle'
+" let g:ale_linters = {
+" \  'javascript': [],
+" \  'vue': [],
+" \}
+" let g:ale_ruby_rubocop_executable = 'bundle'
 
 " ----------------------------
 " Colors, display options, etc
@@ -206,7 +212,7 @@ endif
 " --------------------
 
 " Use host OS clipboard
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " Ignore case in searches unless there are upper-case characters in the search
 set ignorecase

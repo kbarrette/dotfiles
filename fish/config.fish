@@ -19,3 +19,5 @@ end
 if test -e ~/.config/fish/local.fish
   source ~/.config/fish/local.fish
 end
+
+starship init fish | source
