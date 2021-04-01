@@ -1,7 +1,7 @@
 brew "fish"
 brew "fzf"
 brew "neovim"
+brew "git"
 brew "ripgrep"
 brew "starship"
 brew "the_silver_searcher"
-brew "winetricks"
