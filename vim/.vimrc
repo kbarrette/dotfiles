@@ -41,14 +41,22 @@ call plug#begin('~/.vim/plugged')
 Plug 'Lokaltog/vim-easymotion'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 Plug 'airblade/vim-gitgutter'
-Plug 'fatih/vim-go'
+" Plug 'fatih/vim-go'
+Plug 'hrsh7th/nvim-compe'
+Plug 'jparise/vim-graphql'
 Plug 'junegunn/fzf', { 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-operator-replace' | Plug 'kana/vim-operator-user'
 Plug 'mtth/scratch.vim'
+Plug 'mustache/vim-mustache-handlebars'
 Plug 'nanotech/jellybeans.vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'posva/vim-vue'
+" Plug 'metalelf0/jellybeans-nvim' | Plug 'rktjmp/lush.nvim'
+" TODO just use nvim-lsp?
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neovim/nvim-lspconfig'
+" Plug 'nvim-lua/completion-nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdateSync'}
+" Plug 'posva/vim-vue'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
@@ -60,6 +68,11 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/BufOnly.vim'
 " Plug 'dense-analysis/ale' " TODO coc.vim can take over linting?
+
+" Plug 'nvim-lua/popup.nvim'
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-telescope/telescope.nvim'
+
 call plug#end()
 runtime macros/matchit.vim
 
@@ -70,12 +83,15 @@ runtime macros/matchit.vim
 
 " jellybeans setup
 " Make paren matching more subtle, Syntastic errors match other errors, Todo more prominent
+" Turn off background for Normal group - this fixes strange highlighting of parens in neovim floating windows
 let g:jellybeans_overrides = {
 \  'MatchParen': { 'guifg': 'ffffff', 'ctermfg': '231', 'attr': 'underline,bold' },
 \  'SyntasticError': { 'guibg': '902020', 'ctermbg': 'DarkRed' },
 \  'Todo': { 'attr': 'reverse,bold' },
+\  'Normal': { 'guibg': 'None', 'ctermbg': 'None' },
 \}
 colorscheme jellybeans
+
 
 " vim-gitgutter setup
 set signcolumn=yes
@@ -100,7 +116,7 @@ let g:airline#extensions#branch#enabled = 0
 let g:airline_section_y = ''
 
 " YouCompleteMe setup
-let g:ycm_complete_in_comments_and_strings = 1
+" let g:ycm_complete_in_comments_and_strings = 1
 
 " vim-operator-replace setup
 map gr <Plug>(operator-replace)
@@ -110,9 +126,9 @@ let g:scratch_filetype = 'markdown'
 
 " Easymotion setup
 " map <Leader>s <Plug>(easymotion-s)
-map <Leader>S <Plug>(easymotion-S)
-map <Leader>f <Plug>(easymotion-f)
-map <Leader>F <Plug>(easymotion-F)
+" map <Leader>S <Plug>(easymotion-S)
+" map <Leader>f <Plug>(easymotion-f)
+" map <Leader>F <Plug>(easymotion-F)
 map <Leader>w <Plug>(easymotion-bd-w)
 map <Leader>e <Plug>(easymotion-bd-e)
 map <Leader>j <Plug>(easymotion-j)
@@ -124,19 +140,39 @@ nnoremap <C-P> :FZF<CR>
 nnoremap <C-L> :call fzf#vim#buffers(expand('<q-args>'), 0)<CR>
 " autocmd! FileType fzf
 " autocmd  FileType fzf set laststatus=0 noshowmode noruler | autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
 command -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview('right:50%'))
 noremap <leader>ag :call fzf#vim#ag(expand('<cword>'), fzf#vim#with_preview('right:50%'))<CR>
 noremap <leader>s :call fzf#vim#ag(expand('<cword>'), fzf#vim#with_preview('right:50%'))<CR>
 noremap <leader>rg :execute('Rg '.expand('<cword>'))<CR>
 
 " vim-vue setup
-autocmd FileType vue syntax sync fromstart
+" autocmd FileType vue syntax sync fromstart
 
 " coc.nvim setup
+" nmap <silent> <C-]> <Plug>(coc-definition)
+" nnoremap <silent> <C-[> :call CocActionAsync('doHover')<CR>
+
+" let g:LanguageClient_serverCommands = { 'vue': ['vls'] }
+
+" Completion setup
+set completeopt=menuone,noselect
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-nmap <silent> <C-]> <Plug>(coc-definition)
-let g:LanguageClient_serverCommands = { 'vue': ['vls'] }
+
+" nvim-compe setup
+let g:compe = {}
+let g:compe.autocomplete = v:true
+let g:compe.enabled = v:true
+let g:compe.source = {}
+let g:compe.source.path = v:true
+let g:compe.source.buffer = v:true
+let g:compe.source.nvim_lsp = v:true
+let g:compe.source.nvim_lua = v:true
+
+" Telescope setup
+" nnoremap <C-P> <cmd>Telescope find_files<cr>
+" nnoremap <C-L> <cmd>Telescope buffers<cr>
 
 " ale setup
 " let g:ale_linters = {
@@ -251,10 +287,10 @@ autocmd BufLeave * let b:winview = winsaveview()
 autocmd BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
 
 " Highlight extraneous whitespace
-autocmd BufWinEnter * match Error /\s\+$/
-autocmd InsertEnter * match Error /\s\+\%#\@<!$/
-autocmd InsertLeave * match Error /\s\+$/
-autocmd BufWinLeave * call clearmatches()
+" autocmd BufWinEnter * match Error /\s\+$/
+" autocmd InsertEnter * match Error /\s\+\%#\@<!$/
+" autocmd InsertLeave * match Error /\s\+$/
+" autocmd BufWinLeave * call clearmatches()
 
 " Reformat entire file
 nnoremap <leader>fa ggVG=
@@ -279,7 +315,7 @@ set splitbelow
 set splitright
 set nohlsearch
 nnoremap <silent> <C-J> :wincmd w<CR>
-nnoremap <silent> <C-K> :wincmd W<CR>
+" nnoremap <silent> <C-K> :wincmd W<CR>
 
 set tags=.tags
 set path=.
@@ -298,3 +334,37 @@ augroup HiglightTODO
   autocmd!
   autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'TODO', -1)
 augroup END
+
+if 1
+lua << EOF
+local nvim_lsp = require('lspconfig')
+
+local on_attach = function(client, bufnr)
+  -- require'completion'.on_attach()
+
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  -- local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  local opts = { noremap=true, silent=true }
+
+  -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  -- buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', '<C-]>', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+end
+
+nvim_lsp.solargraph.setup { on_attach = on_attach, useBundler = true }
+nvim_lsp.tsserver.setup { on_attach = on_attach }
+
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = false,              -- false will disable the whole extension
+  },
+}
+EOF
+else
+   nmap <silent> <C-]> <Plug>(coc-definition)
+   nnoremap <silent> <C-[> :call CocActionAsync('doHover')<CR>
+end

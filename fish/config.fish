@@ -12,9 +12,7 @@ if test -e ~/.iterm2_shell_integration.fish
   source ~/.iterm2_shell_integration.fish
 end
 
-if status --is-interactive
-  source (rbenv init -|psub)
-end
+source /usr/local/opt/asdf/asdf.fish
 
 if test -e ~/.config/fish/local.fish
   source ~/.config/fish/local.fish
