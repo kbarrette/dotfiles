@@ -38,24 +38,27 @@ nnoremap <leader>bd :bd<CR>
 
 " Plugins
 call plug#begin('~/.vim/plugged')
-Plug 'Lokaltog/vim-easymotion'
+" Plug 'Lokaltog/vim-easymotion'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 Plug 'airblade/vim-gitgutter'
 " Plug 'fatih/vim-go'
 Plug 'hrsh7th/nvim-compe'
+Plug 'itchyny/lightline.vim'
 Plug 'jparise/vim-graphql'
-Plug 'junegunn/fzf', { 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf', { 'do': './install --bin' }
+" Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-operator-replace' | Plug 'kana/vim-operator-user'
 Plug 'mtth/scratch.vim'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'nanotech/jellybeans.vim'
-" Plug 'metalelf0/jellybeans-nvim' | Plug 'rktjmp/lush.nvim'
+Plug 'metalelf0/jellybeans-nvim' | Plug 'rktjmp/lush.nvim'
 " TODO just use nvim-lsp?
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neovim/nvim-lspconfig'
 " Plug 'nvim-lua/completion-nvim'
+Plug 'nvim-telescope/telescope.nvim' | Plug 'nvim-lua/plenary.nvim' | Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdateSync'}
+Plug 'phaazon/hop.nvim'
 " Plug 'posva/vim-vue'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -63,8 +66,8 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rsi'
 " Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/BufOnly.vim'
 " Plug 'dense-analysis/ale' " TODO coc.vim can take over linting?
@@ -90,7 +93,20 @@ let g:jellybeans_overrides = {
 \  'Todo': { 'attr': 'reverse,bold' },
 \  'Normal': { 'guibg': 'None', 'ctermbg': 'None' },
 \}
-colorscheme jellybeans
+" colorscheme jellybeans-nvim
+" colorscheme mustang
+" colorscheme aestang
+if 1
+  colorscheme jellybeans
+  let g:lightline = { 'colorscheme': 'jellybeans' }
+else
+  colorscheme aesir
+  let g:lightline = { 'colorscheme': 'apprentice' }
+  " make cursor line a bit less strong
+  hi CursorLine guibg=#2d2d2d ctermbg=236
+  " make functions non-bold
+  hi Function guifg=#fce96b ctermfg=11 cterm=none gui=none
+end
 
 
 " vim-gitgutter setup
@@ -110,10 +126,10 @@ highlight GitGutterChangeDelete guifg=#2B5B77
 " vim-airline setup
 set noshowmode
 " let g:airline#extensions#ale#enabled = 1
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#branch#displayed_head_limit = 32
-let g:airline#extensions#branch#enabled = 0
-let g:airline_section_y = ''
+" let g:airline_powerline_fonts = 1
+" let g:airline#extensions#branch#displayed_head_limit = 32
+" let g:airline#extensions#branch#enabled = 0
+" let g:airline_section_y = ''
 
 " YouCompleteMe setup
 " let g:ycm_complete_in_comments_and_strings = 1
@@ -129,22 +145,22 @@ let g:scratch_filetype = 'markdown'
 " map <Leader>S <Plug>(easymotion-S)
 " map <Leader>f <Plug>(easymotion-f)
 " map <Leader>F <Plug>(easymotion-F)
-map <Leader>w <Plug>(easymotion-bd-w)
-map <Leader>e <Plug>(easymotion-bd-e)
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
+" map <Leader>w <Plug>(easymotion-bd-w)
+" map <Leader>e <Plug>(easymotion-bd-e)
+" map <Leader>j <Plug>(easymotion-j)
+" map <Leader>k <Plug>(easymotion-k)
 
 " FZF setup
-nnoremap <C-P> :FZF<CR>
+" nnoremap <C-P> :FZF<CR>
+" nnoremap <C-L> :call fzf#vim#buffers(expand('<q-args>'), 0)<CR>
 " nnoremap <C-L> :Buffers<CR>
-nnoremap <C-L> :call fzf#vim#buffers(expand('<q-args>'), 0)<CR>
 " autocmd! FileType fzf
 " autocmd  FileType fzf set laststatus=0 noshowmode noruler | autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
-command -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview('right:50%'))
-noremap <leader>ag :call fzf#vim#ag(expand('<cword>'), fzf#vim#with_preview('right:50%'))<CR>
-noremap <leader>s :call fzf#vim#ag(expand('<cword>'), fzf#vim#with_preview('right:50%'))<CR>
-noremap <leader>rg :execute('Rg '.expand('<cword>'))<CR>
+" command -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview('right:50%'))
+" noremap <leader>ag :call fzf#vim#ag(expand('<cword>'), fzf#vim#with_preview('right:50%'))<CR>
+" noremap <leader>s :call fzf#vim#ag(expand('<cword>'), fzf#vim#with_preview('right:50%'))<CR>
+" noremap <leader>s :execute('Rg '.expand('<cword>'))<CR>
 
 " vim-vue setup
 " autocmd FileType vue syntax sync fromstart
@@ -180,6 +196,24 @@ let g:compe.source.nvim_lua = v:true
 " \  'vue': [],
 " \}
 " let g:ale_ruby_rubocop_executable = 'bundle'
+
+" Lightline
+let g:lightline = {
+      \ 'component_function': {
+      \   'filename': 'LightlineFilename',
+      \ },
+      \ 'colorscheme': 'jellybeans'
+      \ }
+
+function! LightlineFilename()
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
+  let path = expand('%:p')
+  if path[:len(root)-1] ==# root
+    return path[len(root)+1:]
+  endif
+  return expand('%')
+endfunction
+
 
 " ----------------------------
 " Colors, display options, etc
@@ -335,36 +369,83 @@ augroup HiglightTODO
   autocmd WinEnter,VimEnter * :silent! call matchadd('Todo', 'TODO', -1)
 augroup END
 
-if 1
+au TextYankPost * lua vim.highlight.on_yank {higroup="IncSearch", timeout=150, on_visual=true}
+
+nnoremap <silent><C-]> <cmd>lua vim.lsp.buf.definition()<cr>
+nnoremap <silent><leader>f <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent><leader>d <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
+ " nmap <silent> <C-]> <Plug>(coc-definition)
+ " nnoremap <silent> <C-[> :call CocActionAsync('doHover')<CR>
 lua << EOF
-local nvim_lsp = require('lspconfig')
+local lspconfig = require('lspconfig')
 
-local on_attach = function(client, bufnr)
-  -- require'completion'.on_attach()
+lspconfig.solargraph.setup {
+  useBundler = true,
+  -- Testing: debounce to see if it makes solargraph happier
+  flags = {
+    debounce_text_changes = 100,
+  }
+}
+lspconfig.tsserver.setup {}
 
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  -- local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-  local opts = { noremap=true, silent=true }
-
-  -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-  -- buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  -- buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', '<C-]>', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-end
-
-nvim_lsp.solargraph.setup { on_attach = on_attach, useBundler = true }
-nvim_lsp.tsserver.setup { on_attach = on_attach }
+-- modified from https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/tsserver.lua
+-- and https://phelipetls.github.io/posts/configuring-eslint-to-work-with-neovim-lsp/
+local eslint = {
+  --lintCommand = "yarn -s eslint -f visualstudio --stdin --stdin-filename ${INPUT}",
+  lintCommand = "eslint_d -f visualstudio --stdin --stdin-filename ${INPUT}",
+  lintStdin = true,
+  lintFormats = { "%f(%l,%c): %tarning %m", "%f(%l,%c): %rror %m" },
+  lintIgnoreExitCode = true,
+}
+lspconfig.efm.setup {
+  filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+  root_dir = lspconfig.util.root_pattern(".eslintrc*"),
+  settings = {
+    -- loglevel = 1,
+    languages = {
+      javascript = {eslint},
+      javascriptreact = {eslint},
+      ["javascript.jsx"] = {eslint},
+      typescript = {eslint},
+      typescriptreact = {eslint},
+      ["typescript.tsx"] = {eslint},
+    }
+  },
+}
 
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  highlight = {
-    enable = false,              -- false will disable the whole extension
+    highlight = {
+      enable = true,              -- false will disable the whole extension
+       disable = { "ruby" },
   },
 }
+
+-- hop.nvim setup
+require'hop'.setup()
+vim.api.nvim_set_keymap('n', '<leader>w', "<cmd>lua require'hop'.hint_words()<cr>", {})
+
+-- telescope setup
+require('telescope').setup{
+  defaults = {
+    layout_strategy = 'vertical',
+    mappings = {
+      i = {
+        ["<C-j>"] = require("telescope.actions").move_selection_next,
+        ["<C-k>"] = require("telescope.actions").move_selection_previous,
+        ["<C-u>"] = false, -- use standard readline kill line
+        ["<esc>"] = require("telescope.actions").close, -- close even if in insert mode in the popup
+      },
+    },
+  },
+  pickers = {
+    buffers = {
+      sort_lastused = true,
+    }
+  },
+}
+vim.api.nvim_set_keymap('n', '<C-p>', "<cmd>lua require'telescope.builtin'.git_files()<cr>", {})
+vim.api.nvim_set_keymap('n', '<C-l>', "<cmd>lua require'telescope.builtin'.buffers()<cr>", {})
+vim.api.nvim_set_keymap('n', '<leader>s', "<cmd>lua require'telescope.builtin'.grep_string()<cr>", {})
+vim.api.nvim_set_keymap('n', '<leader>a', "<cmd>lua require'telescope.builtin'.lsp_references()<cr>", {})
 EOF
-else
-   nmap <silent> <C-]> <Plug>(coc-definition)
-   nnoremap <silent> <C-[> :call CocActionAsync('doHover')<CR>
-end

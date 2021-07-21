@@ -1,0 +1,17 @@
+[ruby]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[python]
+disabled = true
+
+[git_status]
+disabled = true
+
+[docker_context]
+disabled = true
+
+[directory]
+truncation_length = 0
